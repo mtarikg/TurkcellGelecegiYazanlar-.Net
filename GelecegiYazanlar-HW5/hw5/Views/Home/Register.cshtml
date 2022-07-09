@@ -1,0 +1,32 @@
+﻿
+@model User
+@{
+    ViewBag.Title = "Form Page";
+    Layout = "_Layout";
+}
+
+<form method="post" novalidate>
+    <p>
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" />
+        <span asp-validation-for="FullName"></span>
+    </p>
+    <p>
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </p>
+    <p>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </p>
+    <p>
+        <label asp-for="Gender"></label>
+        <input type="radio" name="gender" value="male" /> Male
+        <input type="radio" name="gender" value="female" /> Female
+        <input type="radio" name="gender" value="not to say" /> Prefer not to say
+        <span asp-validation-for="Gender"></span>
+    </p>
+    <button type="submit">Save</button>
+</form>

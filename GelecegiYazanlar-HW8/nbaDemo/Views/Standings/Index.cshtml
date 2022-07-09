@@ -1,0 +1,30 @@
+﻿@model nbaDemo.Web.Models.StandingsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@foreach (var item in Model.ConferenceTeams)
+{
+    <table class="table">
+        <thead>
+            <tr style="text-align:center; vertical-align:middle">
+                <td>
+                    <img src="@item.Key.Logo" class="img-thumbnail" alt="Alternate Text" height="64" width="64" />
+                    <p style="font-weight:bold">@Html.DisplayFor(modelItem => item.Key.Name)</p>
+                </td>
+                <td>
+                </td>
+                @if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Key.ID })
+                    </td>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <partial name="_Teams" model="item.Value" />
+        </tbody>
+    </table>
+}

@@ -1,0 +1,69 @@
+﻿@model nbaDemo.Web.Models.SinglePlayerViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<table class="table table">
+    <thead>
+        <tr>
+            <th>
+                <img src="@Model.Team.Logo" class="img-fluid" alt="Alternate Text" height="212" width="155" />
+            </th>
+            <th>
+                <img src="@Model.Player.ProfileImage" class="img-fluid" alt="Alternate Text" height="424" width="310" />
+            </th>
+            <th>
+                <p>
+                    @Model.Player.JerseyNumber
+                    <br />
+                    @Model.Position.Name
+                    <br />
+                    <b>@Model.Player.FullName</b>
+                    <br />
+                    @if (User.IsInRole(AuthorizeRoles.Fan.ToString()))
+                    {
+                        <button type="button" class="btn btn-primary player" data-id="@Model.Player.ID">Favorite</button>
+                    }
+                </p>
+            </th>
+        </tr>
+    </thead>
+</table>
+
+<div>
+    <div style="display:flex; justify-content: space-evenly">
+        <p><label asp-for="@Model.Player.Age"></label> : @Model.Player.Age</p>
+        <p><label asp-for="@Model.Player.Country"></label> : @Model.Player.Country</p>
+        <p><label asp-for="@Model.Player.Height"></label> : @Model.Player.Height</p>
+        <p><label asp-for="@Model.Player.Weight"></label> : @Model.Player.Weight</p>
+    </div>
+    <div style="display:flex; justify-content: space-evenly">
+        <p><label asp-for="@Model.Player.Experience"></label> : @Model.Player.Experience</p>
+        <p><label asp-for="@Model.Player.LastAttended"></label> : @Model.Player.LastAttended</p>
+        <p><label asp-for="@Model.Player.DateOfBirth"></label> : @Model.Player.DateOfBirth</p>
+        <p><label asp-for="@Model.Player.DraftInfo"></label> : @Model.Player.DraftInfo</p>
+    </div>
+</div>
+<a asp-action="Index">Back to List</a>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.player').on('click', function () {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '/Users/AddPlayerToFavorite/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        alertify.success(data);
+                    },
+                    error: function (data) {
+                        alertify.alert(data);
+                    }
+                });
+            })
+        })
+    </script>
+}

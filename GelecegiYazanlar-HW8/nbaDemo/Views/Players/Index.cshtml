@@ -1,0 +1,76 @@
+﻿@model nbaDemo.Web.Models.PlayersViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 style="text-align:center">All Players</h2>
+
+@if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table">
+    @foreach (var item in Model.PositionPlayers)
+    {
+        <thead>
+            <tr style=" text-align:center">
+                <th style="padding-bottom: 3em; text-decoration:none; text-align:center"><partial name="_Positions" model="item.Key" /></th>
+                <th>Player</th>
+                <th>Number</th>
+                <th>Height</th>
+                <th>Weight</th>
+                <th>Last Attended</th>
+                <th>Country</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @if (item.Value != null)
+        {
+            @foreach (var player in item.Value)
+            {
+                <tbody>
+                    <tr style="vertical-align: middle; text-align:center">
+                        <td>
+                            <a href="@Url.Action("Details", "Players", new { id = player.ID })">
+                                <img src="@player.ProfileImage" class="img-thumbnail" alt="Alternate Text" width="64" height="64" />
+                            </a>
+                        </td>
+                        <td>
+                            <a style="text-decoration: none" href="@Url.Action("Details", "Players", new { id = player.ID })">
+                                @Html.DisplayFor(modelItem => player.FullName)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => player.JerseyNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => player.Height)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => player.Weight)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => player.LastAttended)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => player.Country)
+                        </td>
+                        @if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = player.ID }) |
+                                @Html.ActionLink("Details", "Details", new { id = player.ID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = player.ID })
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            }
+        }
+    }
+</table>

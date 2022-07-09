@@ -1,0 +1,54 @@
+﻿@model nbaDemo.Web.Models.TeamsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 style="text-align: center">All Teams</h2>
+
+@if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table" >
+    @foreach (var item in Model.DivisionTeams)
+    {
+        <thead>
+            <tr style=" text-align:center; vertical-align:middle; display:flex">
+                <partial name="_Divisions" model="item.Key" />
+            </tr>
+        </thead>
+
+        @if (item.Value != null)
+        {
+            @foreach (var team in item.Value)
+            {
+                <tbody>
+                    <tr style=" text-align:center; vertical-align:middle">
+                        <td>
+                            <a href="@Url.Action("Details", "Teams", new { id = team.ID })">
+                                <img src="@team.Logo" class="img-thumbnail" alt="Alternate Text" width="64" height="64" />
+                            </a>
+                        </td>
+                        <td>
+                            <a style="text-decoration: none" href="@Url.Action("Details", "Teams", new { id = team.ID })">
+                                @Html.DisplayFor(modelItem => team.Name)
+                            </a>
+                        </td>
+                        @if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = team.ID }) |
+                                @Html.ActionLink("Details", "Details", new { id = team.ID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = team.ID })
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            }
+        }
+    }
+</table>

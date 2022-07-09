@@ -1,0 +1,65 @@
+﻿@model nbaDemo.Web.Models.SingleTeamViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<table class="table table">
+    <thead>
+        <tr>
+            <th>
+                <img src="@Model.Conference.Logo" class="img-fluid" alt="Alternate Text" height="212" width="155" />
+            </th>
+            <th>
+                <img src="@Model.Team.Logo" class="img-fluid" alt="Alternate Text" height="424" width="310" />
+            </th>
+            <th>
+                <p>
+                    @Model.Conference.Name
+                    <br />
+                    @Model.Division.Name
+                    <br />
+                    <b>@Model.Team.Name</b>
+                    <br />
+                    @if (User.IsInRole(AuthorizeRoles.Fan.ToString()))
+                    {
+                        <button type="button" class="btn btn-primary team" data-id="@Model.Team.ID">Favorite</button>
+                    }
+                </p>
+            </th>
+        </tr>
+    </thead>
+</table>
+
+<div>
+    <div style="display:flex; justify-content: space-evenly">
+        <p><label asp-for="@Model.Team.CurrentOwner"></label> : @Model.Team.CurrentOwner</p>
+        <p><label asp-for="@Model.Team.Arena"></label> : @Model.Team.Arena</p>
+    </div>
+    <div style="display:flex; justify-content: space-evenly">
+        <p><label asp-for="@Model.Team.HeadCoach"></label> : @Model.Team.HeadCoach</p>
+        <p><label asp-for="@Model.Team.FoundationYear"></label> : @Model.Team.FoundationYear</p>
+    </div>
+</div>
+<a asp-action="Index">Back to List</a>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.team').on('click', function () {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '/Users/AddTeamToFavorite/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        alertify.success(data);
+                    },
+                    error: function (data) {
+                        alertify.alert(data);
+                    }
+                })
+            });
+        });
+    </script>
+}

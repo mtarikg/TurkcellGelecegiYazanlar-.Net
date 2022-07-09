@@ -1,0 +1,89 @@
+﻿@model nbaDemo.Web.Models.Favorite.FavoriteCollectionsViewModel
+
+<h1 style="text-align: center">My Favorites</h1>
+<h2>My Favorite Teams</h2>
+
+@if (Model.FavoriteTeamsCollection.FavoriteTeams.Count == 0)
+{
+    <div class="alert alert-warning">You have not selected your favorite teams so far...</div>
+}
+else
+{
+    @foreach (var team in Model.FavoriteTeamsCollection.FavoriteTeams)
+    {
+        <table class="table table">
+            <tbody>
+                <tr style="display: flex">
+                    <td><img src="@team.Team.Logo" class="img-fluid" height="100" width="100" /></td>
+                    <td>
+                        @team.Team.Name
+                        <button type="button" class="btn btn-light team" data-id="@team.Team.ID">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}
+
+<h2>My Favorite Players</h2>
+
+@if (Model.FavoritePlayersCollection.FavoritePlayers.Count == 0)
+{
+    <div class="alert alert-warning">You have not selected your favorite players so far...</div>
+}
+else
+{
+    @foreach (var player in Model.FavoritePlayersCollection.FavoritePlayers)
+    {
+        <table class="table table">
+            <tbody>
+                <tr style="display: flex">
+                    <td><img src="@player.Player.ProfileImage" class="img-fluid" height="100" width="100" /></td>
+                    <td>
+                        @player.Player.FullName
+                        <button type="button" class="btn btn-light player" data-id="@player.Player.ID">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.player').on('click', function () {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '/Users/RemovePlayerFromFavorite/' + id,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        alertify.success(data);
+                    },
+                    error: function (data) {
+                        alertify.alert(data);
+                    }
+                })
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.team').on('click', function () {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '/Users/RemoveTeamFromFavorite/' + id,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        alertify.success(data);
+                    },
+                    error: function (data) {
+                        alertify.alert(data);
+                    }
+                })
+            });
+        });
+    </script>
+}

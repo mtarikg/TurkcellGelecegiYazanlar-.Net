@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TeamListResponse>
+
+<table class="table">
+    @foreach (var team in Model)
+    {
+        <tbody>
+            <tr style="display: flex; justify-content: center">
+                <td>
+                    <a href="@Url.Action("Details", "Teams", new { id = team.ID })">
+                        <img src="@team.Logo" class="img-thumbnail" alt="Alternate Text" width="64" height="64" />
+                    </a>
+                </td>
+                <td style="align-self: center">
+                    <a style="text-decoration: none" href="@Url.Action("Details", "Teams", new { id = team.ID })">
+                        @Html.DisplayFor(modelItem => team.Name)
+                    </a>
+                </td>
+                @if (User.IsInRole(AuthorizeRoles.Administrator.ToString()) || User.IsInRole(AuthorizeRoles.Editor.ToString()))
+                {
+                    <td style="align-self: center">
+                        <a href="@Url.Action("Edit", "Teams", new { id = team.ID })">Edit</a> |
+                        <a href="@Url.Action("Details", "Teams", new { id = team.ID })">Details</a> |
+                        <a href="@Url.Action("Delete", "Teams", new { id = team.ID })">Delete</a>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    }
+</table>

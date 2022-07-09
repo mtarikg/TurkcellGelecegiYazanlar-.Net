@@ -1,0 +1,62 @@
+﻿@model nbaDemo.DTOs.Requests.TeamRequests.TeamEditRequest
+
+<h4>TeamEditRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label"></label>
+                <input asp-for="ID" class="form-control" />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentOwner" class="control-label"></label>
+                <input asp-for="CurrentOwner" class="form-control" />
+                <span asp-validation-for="CurrentOwner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HeadCoach" class="control-label"></label>
+                <input asp-for="HeadCoach" class="form-control" />
+                <span asp-validation-for="HeadCoach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Arena" class="control-label"></label>
+                <input asp-for="Arena" class="form-control" />
+                <span asp-validation-for="Arena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DivisionID" class="control-label"></label>
+                <select class="form-control" asp-for="DivisionID" asp-items="ViewBag.Divisions"></select>
+                <span asp-validation-for="DivisionID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConferenceID" class="control-label"></label>
+                <select class="form-control" asp-for="ConferenceID" asp-items="ViewBag.Conferences"></select>
+                <span asp-validation-for="ConferenceID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
